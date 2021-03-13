@@ -5,15 +5,19 @@
 #include <netinet/in.h> 
 #include <unistd.h>
 #include "uv.h"
+#include "hashmap.h"
+#include "handler.h"
 
 
 typedef struct Server Server;
 
+
 struct Server {
-    
     uv_tcp_t *Server_uv_server;
     uv_loop_t *Server_uv_loop;
 
+    // Key: url , val: Handler
+    Hashmap *handlers ;
 
     int port;
     struct sockaddr_in *address;

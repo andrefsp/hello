@@ -1,11 +1,11 @@
 #ifndef _HELLO_HASHMAP_C
 #define _HELLO_HASHMAP_C
 
-
 #include "gc.h"
 #include "string.h"
 #include "stdio.h"
 #include "hashmap.h"
+
 
 void *Hashmap_Get(Hashmap *map, void *lkey) {
     for (int i = 0; i < map->Size; i++) {

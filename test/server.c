@@ -24,6 +24,7 @@ void test_server_with_request(void) {
     assert(((void)"run server", s->Start(s, FALSE) == 0));
     
     Request *req = NewRequest("GET", "http://localhost:9300");
+    req->SetBody(req, "{\"a\":123}");
 
     Response *res = client->Do(client, req);
 
@@ -32,8 +33,16 @@ void test_server_with_request(void) {
 }
 
 
+void test_server_add_handler(void) {
+    Server *s = NewServer(0);
+    assert(s != NULL);
+
+
+}
+
 void test_server(void) {
     test_server_start_stop();
     test_server_start_listen();
     test_server_with_request();
+    test_server_add_handler();
 }

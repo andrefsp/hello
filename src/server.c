@@ -115,10 +115,13 @@ Server *NewServer(int port) {
     s->Start = Server_Start;
     s->Stop = Server_Stop;
     s->Listen = Server_Listen;
-
+    
     s->Server_uv_loop = GC_MALLOC(sizeof(uv_loop_t));
     s->Server_uv_server = GC_MALLOC(sizeof(uv_tcp_t));
     s->Server_uv_server->data = s; // Pass server pointer to uv_loop handlers
+
+    s->handlers = GC_MALLOC(sizeof(Hashmap));
+
     return s;
 }
 

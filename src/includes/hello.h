@@ -13,5 +13,6 @@
 #include "request.h"
 #include "http_client.h"
 #include "server.h"
+#include "handler.h"
 
 #endif
