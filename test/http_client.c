@@ -7,8 +7,8 @@ void test_http_client_new_request(void) {
     char *url = "http://localhost:7777";
     Request *req = NewRequest("GET", url);
  
-    assert(((void)"url", strcmp(req->url, url) == 0));
-    assert(((void)"method", strcmp(req->method, "GET") == 0));
+    assert(((void)"url", strcmp(req->Url, url) == 0));
+    assert(((void)"method", strcmp(req->Method, "GET") == 0));
 
     req->SetTimeout(req, 2);
     req->SetHeader(req, "Authorization", "Bearer sometoken");

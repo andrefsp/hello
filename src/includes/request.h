@@ -7,9 +7,10 @@ typedef struct Request Request;
 
 struct Request {
     Hashmap *Headers;
-    char *method;
-    char *url;
-    char *body;
+
+    char *Method;
+    char *Url;
+    char *Body;
     long Timeout;
     long ConnectTimeout;
 
@@ -18,6 +19,8 @@ struct Request {
     void (*SetBody)(Request *r, char *body);
     void (*SetTimeout)(Request *r, long timeout);
     void (*SetConnectTimeout)(Request *r, long timeout);
+
+    int (*Parse)(Request *r, char *buff);
 };
 
 
@@ -32,5 +35,8 @@ void Request_SetConnectTimeout(Request *r, long timeout);
 
 // Constructor
 Request *NewRequest();
+
+Request *NewRequestFromBuffer(char *buff);
+
 
 #endif

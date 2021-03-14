@@ -19,7 +19,7 @@ static size_t _responseHeaderHandler(void *contents, size_t size, size_t nmemb, 
     header = str_clean(header);
 
     if (strlen(header) < 1) {
-        goto free;
+        return nmemb;
     }
 
     Response *res = (Response *)userp;
@@ -38,10 +38,6 @@ static size_t _responseHeaderHandler(void *contents, size_t size, size_t nmemb, 
         res->SetHeader(res, hname, hval); 
     }
 
-free:
-    GC_FREE(header); 
-    GC_FREE(parts);
-
     return nmemb;
 }
 
@@ -53,13 +49,13 @@ Response *HttpClient_Do(HttpClient *c, Request *r) {
     curl_easy_setopt(c->curl, CURLOPT_CONNECTTIMEOUT, r->ConnectTimeout);
 
     // Method
-    curl_easy_setopt(c->curl, CURLOPT_CUSTOMREQUEST, r->method);
+    curl_easy_setopt(c->curl, CURLOPT_CUSTOMREQUEST, r->Method);
 
     // Url
-    curl_easy_setopt(c->curl, CURLOPT_URL, r->url);
+    curl_easy_setopt(c->curl, CURLOPT_URL, r->Url);
 
     // Body 
-    curl_easy_setopt(c->curl, CURLOPT_POSTFIELDS, r->body);
+    curl_easy_setopt(c->curl, CURLOPT_POSTFIELDS, r->Body);
 
     // Headers
     for (int i = 0; i < r->Headers->Size; i++) {

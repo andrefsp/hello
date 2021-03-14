@@ -23,8 +23,6 @@ void Response_WriteBody(Response *r, char *contents) {
     strcat(newBody, r->Body);
     strcat(newBody, contents);
     
-    GC_FREE(r->Body);
-
     r->Body = newBody;
 }
 

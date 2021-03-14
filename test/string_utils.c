@@ -2,7 +2,7 @@
 #include <string.h>
 #include "../src/hello.c"
 
-void test_str_clean() { 
+void test_str_clean() {
     char *res = str_clean("type\r\n");
     assert(strcmp(res, "type") == 0);
 
@@ -138,5 +138,5 @@ void test_string_utils() {
     test_str_rstrip_carrige_return(); 
     test_str_rstrip_carrige_return_new_lines(); 
     test_str_rstrip();
-    test_str_strip(); 
+    test_str_strip();
 }

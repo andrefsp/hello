@@ -31,11 +31,7 @@ void Server_Handler(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
         fprintf(stderr, "Write error: %s\n", uv_strerror(err));
         /* error */
     }
-    GC_FREE(buf->base);
     
-    GC_FREE(resp->base);
-    GC_FREE(resp);
-
     uv_close((uv_handle_t *)stream, NULL);
 }
 
