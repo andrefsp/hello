@@ -21,7 +21,7 @@ Response *get_fn(Handler *h, Request *req) {
     Response *res = NewResponse();
     res->SetStatus(res, "OK");
     res->SetStatusCode(res, 200);
-    res->SetHeader(res, "Content-Type", "application/json");
+    res->SetHeader(res, "Content-Type", "text/plain");
     res->WriteBody(res, "helloworld");
     return res;
 }
@@ -30,11 +30,11 @@ void test_server_with_request(void) {
     HttpClient *client = NewHttpClient();
 
     Server *s = NewServer(9300);
-    assert(((void)"run server", s->Start(s, FALSE) == 0));
-
     Handler *hnd = GC_MALLOC(sizeof(Handler));
     hnd->Get = get_fn;
     assert(((void)"handler added", !s->AddHandler(s, "/", hnd)));
+
+    assert(((void)"run server", s->Start(s, FALSE) == 0));
 
     Request *req = NewRequest("GET", "http://localhost:9300");
     req->SetBody(req, "{\"a\":123}");
@@ -46,7 +46,7 @@ void test_server_with_request(void) {
    
     char *ctype = res->GetHeader(res, "Content-Type");
     assert(((void)"not nil", ctype));
-    assert(((void)"status code", strcmp(ctype, "application/json") == 0));
+    assert(((void)"status code", strcmp(ctype, "text/plain") == 0));
     assert(((void)"stop server", s->Stop(s) == 0));
 }
 
