@@ -1,4 +1,6 @@
 // Test includes files
+#include <stdlib.h>
+
 #include "point.c"
 #include "server.c"
 #include "request.c"

@@ -10,23 +10,53 @@
 #include "buffer_utils.c"
 
 
+char *Response_buffer(char *current, char *next) {
+    char *ret = GC_MALLOC((strlen(current)+strlen(next))*sizeof(char));
+    strcat(ret, current);
+    strcat(ret, next);
+    return ret; 
+}
+
+
 void Server_Handler(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
-    //Server *s = stream->data;
+    Server *s = stream->data;
     // TODO: (andrefsp) :: User server for handlers at this point.
     // 
-
     uv_write_t *req = GC_MALLOC(sizeof(uv_write_t));
-
     if (nread == -1) {
         /* if (uv_last_error(loop).code != UV_EOF) { */
         /* } */
         uv_close((uv_handle_t *)stream, NULL);
     }
 
-    uv_buf_t *resp = new_uv_buffer("HTTP/1.1 200 OK\r\n");
+    // Create request    
+    Request *hreq = NewRequestFromBuffer(buf->base);
+    
+    Handler *hnd = s->Handlers->Get(s->Handlers, hreq->Url);
+
+    // Pass request object to the handler! 
+    Response *hresp = hnd->Get(hnd, hreq);
+    
+    char *statusLine = GC_MALLOC(100);
+    sprintf(statusLine, "HTTP/1.1 %d %s\r\n", hresp->StatusCode, hresp->Status);
+
+    char *respBuffer = "";
+    respBuffer = Response_buffer(respBuffer, statusLine); 
+    
+    for (int x = 0; x < hresp->Headers->Size; x++) {
+        respBuffer = Response_buffer(respBuffer, (char *)hresp->Headers->Items[x]->key);
+        respBuffer = Response_buffer(respBuffer, ": ");
+        respBuffer = Response_buffer(respBuffer, (char *)hresp->Headers->Items[x]->data);
+        respBuffer = Response_buffer(respBuffer, "\r\n");
+    } 
+
+    // Header termination
+    respBuffer = Response_buffer(respBuffer, "\r\n");  
+    respBuffer = Response_buffer(respBuffer, hresp->Body);
+   
+    uv_buf_t *resp = new_uv_buffer(respBuffer);
 
     int err = uv_write(req, stream, resp, 1, NULL);
-
     if (err) {
         fprintf(stderr, "Write error: %s\n", uv_strerror(err));
         /* error */
@@ -98,25 +128,31 @@ void Server_close_handler(uv_handle_t *handler, void *arg) {
 int Server_Stop(Server *s) {
     uv_stop(s->Server_uv_loop);
     uv_loop_close(s->Server_uv_loop);
-
     uv_walk(s->Server_uv_loop, Server_close_handler, s);
-
     return 0;
 }
 
+int Server_AddHandler(Server *s, char *uri, Handler *hnd) {
+    char *muri = GC_MALLOC(strlen(uri)*sizeof(char));
+    strcpy(muri, uri);
+
+    s->Handlers->Set(s->Handlers, muri, hnd);
+    return 0;
+}
 
 Server *NewServer(int port) {
     Server *s = GC_MALLOC(sizeof(Server));
+    s->Handlers = NewHashmap();
+
     s->port = port;
     s->Start = Server_Start;
     s->Stop = Server_Stop;
     s->Listen = Server_Listen;
-    
+    s->AddHandler = Server_AddHandler;
+
     s->Server_uv_loop = GC_MALLOC(sizeof(uv_loop_t));
     s->Server_uv_server = GC_MALLOC(sizeof(uv_tcp_t));
     s->Server_uv_server->data = s; // Pass server pointer to uv_loop handlers
-
-    s->handlers = GC_MALLOC(sizeof(Hashmap));
 
     return s;
 }

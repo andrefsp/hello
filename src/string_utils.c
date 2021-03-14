@@ -7,7 +7,7 @@
 #include "string_utils.h"
 
 
-char *str_clean(char *text) {
+char *str_clean(const char *text) {
     const int len = strlen(text);
     char *string = GC_MALLOC(len*sizeof(char));
     
@@ -27,15 +27,13 @@ char *str_clean(char *text) {
 }
 
 
-char *str_strip(char *text, char ch) {
-    char *lstrp = str_lstrip(text, ch);
-    char *strip = str_rstrip(lstrp, ch);
-
-    return strip;
+char *str_strip(const char *text, char ch) {
+    char *strip = str_rstrip(text, ch);
+    return str_lstrip(strip, ch);
 }
 
 
-char *str_rstrip(char *text, char ch) {
+char *str_rstrip(const char *text, char ch) {
     const int len = strlen(text);
     int x = len-1;
     while (text[x] == ch) { x--; }
@@ -44,12 +42,13 @@ char *str_rstrip(char *text, char ch) {
     for (int i = 0; i <= x; i++) {
         string[i] = text[i];
     }
+
     string[x+1] = '\0';
     return string;
 }
 
 
-char *str_lstrip(char *text, char ch) { 
+char *str_lstrip(const char *text, char ch) { 
     int x = 0;
     while (text[x] == ch) { x++; }
     
@@ -60,13 +59,12 @@ char *str_lstrip(char *text, char ch) {
     for (int i = x; i < len; i++) {
         string[i-x] = text[i];
     }
-
     string[tlen] = '\0';
     return string;
 }
 
 
-char **str_tokenize(char *text, const char *sep) {
+char **str_tokenize(const char *text, const char *sep) {
     const int len = strlen(text);
 
     char string[len];
@@ -95,7 +93,7 @@ char **str_tokenize(char *text, const char *sep) {
 }
 
 
-char **str_n_tokenize(char *text, const char *sep, int n) {
+char **str_n_tokenize(const char *text, const char *sep, int n) {
     if (n < 1) { 
         return str_tokenize(text, sep);
     }

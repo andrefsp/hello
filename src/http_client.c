@@ -31,7 +31,6 @@ static size_t _responseHeaderHandler(void *contents, size_t size, size_t nmemb, 
         res->SetStatus(res, parts[2]);
     } else {
         parts = str_n_tokenize(header, ":", 1);
-        
         char *hname = str_strip(parts[0], ' ');
         char *hval = str_strip(parts[1], ' ');
 

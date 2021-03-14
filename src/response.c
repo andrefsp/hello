@@ -22,16 +22,17 @@ void Response_WriteBody(Response *r, char *contents) {
     char *newBody = GC_MALLOC((strlen(contents)+strlen(r->Body))*sizeof(char));
     strcat(newBody, r->Body);
     strcat(newBody, contents);
-    
+     
     r->Body = newBody;
 }
 
 void Response_SetHeader(Response *r, char *name, char *val) {
-    char *hname = GC_MALLOC((strlen(name)+1)*sizeof(char));
-    char *hval = GC_MALLOC((strlen(val)+1)*sizeof(char));
+    char *hname = GC_MALLOC((strlen(name))*sizeof(char));
+    char *hval = GC_MALLOC((strlen(val))*sizeof(char));
 
     strcpy(hname, name);
     strcpy(hval, val);
+    
 
     r->Headers->Set(r->Headers, hname, hval);
 }

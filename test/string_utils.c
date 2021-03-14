@@ -59,6 +59,9 @@ void test_str_strip() {
     char *res = str_strip(text, ' ');
 
     assert(strcmp(res, "this is a test") == 0);
+
+    res = str_strip("Content-Type", ' ');
+    assert(strcmp(res, "Content-Type") == 0);   
 }
 
 void test_str_tokenize() { 

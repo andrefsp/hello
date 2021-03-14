@@ -17,7 +17,7 @@ struct Server {
     uv_loop_t *Server_uv_loop;
 
     // Key: url , val: Handler
-    Hashmap *handlers ;
+    Hashmap *Handlers ;
 
     int port;
     struct sockaddr_in *address;
@@ -25,6 +25,7 @@ struct Server {
     int (*Start)(Server *s, int block);
     int (*Stop)(Server *s);
     void (*Listen)(void *s);
+    int (*AddHandler)(Server *s, char *uri, Handler *hnd);
 };
 
 int Server_Start(Server *s, int block);
@@ -32,6 +33,8 @@ int Server_Start(Server *s, int block);
 int Server_Stop(Server *s);
 
 void Server_Listen(void *s);
+
+int Server_AddHandler(Server *s, char *uri, Handler *hnd);
 
 // Constructor
 Server *NewServer(int port);
