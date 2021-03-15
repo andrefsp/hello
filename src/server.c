@@ -11,14 +11,6 @@
 #include "buffer_utils.c"
 
 
-char *Response_buffer(char *current, char *next) {
-    char *ret = GC_MALLOC((strlen(current)+strlen(next))*sizeof(char));
-    strcat(ret, current);
-    strcat(ret, next);
-    return ret; 
-}
-
-
 void Server_Handler(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
     Server *s = stream->data;
     // TODO: (andrefsp) :: User server for handlers at this point.
@@ -30,32 +22,23 @@ void Server_Handler(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
         uv_close((uv_handle_t *)stream, NULL);
     }
 
-    // Create request    
+    // Create request
     Request *hreq = NewRequestFromBuffer(buf->base);
-    
+   
+    // TODO(andrefsp): Handlers must be a router. 
     Handler *hnd = s->Handlers->Get(s->Handlers, hreq->Url);
 
-    // Pass request object to the handler! 
-    Response *hresp = hnd->Get(hnd, hreq);
+    Response *hresp; 
+    if (hnd) { 
+        hresp = hnd->Get(hnd, hreq);
+    } else {
+        // Not found!
+        hresp = NewResponse();
+        hresp->SetStatus(hresp, "Not Found");
+        hresp->SetStatusCode(hresp, 404);
+    }
     
-    char *statusLine = GC_MALLOC(100);
-    sprintf(statusLine, "HTTP/1.1 %d %s\r\n", hresp->StatusCode, hresp->Status);
-
-    char *respBuffer = "";
-    respBuffer = Response_buffer(respBuffer, statusLine); 
-    
-    for (int x = 0; x < hresp->Headers->Size; x++) {
-        respBuffer = Response_buffer(respBuffer, (char *)hresp->Headers->Items[x]->key);
-        respBuffer = Response_buffer(respBuffer, ": ");
-        respBuffer = Response_buffer(respBuffer, (char *)hresp->Headers->Items[x]->data);
-        respBuffer = Response_buffer(respBuffer, "\r\n");
-    } 
-
-    // Header termination
-    respBuffer = Response_buffer(respBuffer, "\r\n");  
-    respBuffer = Response_buffer(respBuffer, hresp->Body);
-   
-    uv_buf_t *resp = new_uv_buffer(respBuffer);
+    uv_buf_t *resp = new_uv_buffer(hresp->ToString(hresp));
 
     int err = uv_write(req, stream, resp, 1, NULL);
     if (err) {

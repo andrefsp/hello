@@ -145,4 +145,12 @@ char **str_n_tokenize(const char *text, const char *sep, int n) {
 }
 
 
+char *str_concat(char *current, char *next) {
+    char *ret = GC_MALLOC((strlen(current)+strlen(next))*sizeof(char));
+    strcat(ret, current);
+    strcat(ret, next);
+    return ret; 
+}
+
+
 #endif

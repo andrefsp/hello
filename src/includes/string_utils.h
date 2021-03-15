@@ -19,4 +19,7 @@ char *str_strip(const char *text, char ch);
 // clean cariage returns
 char *str_clean(const char *text);
 
+// Concat strings
+char *str_concat(char *current, char *next);
+
 #endif

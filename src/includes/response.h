@@ -17,8 +17,9 @@ struct Response {
     void (*SetStatusCode)(Response *r, int statusCode);
     void (*SetHeader)(Response *r, char *name, char *val);
     char * (*GetHeader)(Response *r, char *name);
-
     void (*WriteBody)(Response *r, char *contents);
+
+    char * (*ToString)(Response *r);
 };
 
 void Response_SetStatus(Response *r, char *rstatus);
@@ -30,6 +31,8 @@ void Response_WriteBody(Response *r, char *contents);
 void Response_SetHeader(Response *r, char *name, char *val);
 
 char *Response_GetHeader(Response *r, char *name);
+
+char *Response_ToString(Response *r);
 
 // Constructor
 Response *NewResponse();

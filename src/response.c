@@ -1,14 +1,15 @@
 #include "gc.h"
+#include <strings.h>
 
 
 #ifndef _HELLO_RESPONSE_C
 #define _HELLO_RESPONSE_C
 
-#include "strings.h"
 #include "response.h"
 
 // Implementations
 #include "hashmap.c"
+#include "string_utils.c"
 
 
 void Response_SetStatusCode(Response *r, int statusCode) {
@@ -35,7 +36,6 @@ void Response_SetHeader(Response *r, char *name, char *val) {
     strcpy(hname, name);
     strcpy(hval, val);
     
-
     r->Headers->Set(r->Headers, hname, hval);
 }
 
@@ -43,6 +43,23 @@ char *Response_GetHeader(Response *r, char *name) {
     return r->Headers->Get(r->Headers, name);
 }
 
+char *Response_ToString(Response *r) {
+    char *statusLine = GC_MALLOC(100);
+    sprintf(statusLine, "HTTP/1.1 %d %s\r\n", r->StatusCode, r->Status);
+
+    char *respString = str_concat("", statusLine); 
+    for (int x = 0; x < r->Headers->Size; x++) {
+        respString = str_concat(respString, (char *)r->Headers->Items[x]->key);
+        respString = str_concat(respString, ": ");
+        respString = str_concat(respString, (char *)r->Headers->Items[x]->data);
+        respString = str_concat(respString, "\r\n");
+    } 
+
+    // Header termination
+    respString = str_concat(respString, "\r\n");  
+    respString = str_concat(respString, r->Body);
+    return respString;
+}
 
 Response *NewResponse() {
     Response *res = GC_MALLOC(sizeof(Response));
@@ -57,6 +74,7 @@ Response *NewResponse() {
     res->GetHeader = Response_GetHeader;
     res->WriteBody = Response_WriteBody;
 
+    res->ToString = Response_ToString;
     res->Body = GC_MALLOC(sizeof(char));
     return res;
 }
