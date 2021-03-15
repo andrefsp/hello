@@ -36,7 +36,7 @@ char *str_strip(const char *text, char ch) {
 
 char *str_rstrip(const char *text, char ch) {
     const int len = strlen(text);
-    char *string = GC_MALLOC(len*sizeof(char));
+    char *string = GC_MALLOC((len+1)*sizeof(char));
     strcpy(string, text);
 
     int x = len-1;
@@ -65,7 +65,7 @@ char *str_lstrip(const char *text, char ch) {
 char **str_tokenize(const char *text, const char *sep) {
     const int len = strlen(text);
 
-    char *string = GC_MALLOC(len*sizeof(char));
+    char *string = GC_MALLOC((len+1)*sizeof(char));
     strcpy(string, text);
 
     int numparts = 0;
@@ -81,7 +81,7 @@ char **str_tokenize(const char *text, const char *sep) {
 
     numparts = 0;
 
-    output[numparts] = GC_MALLOC(strlen(token)*sizeof(char));
+    output[numparts] = GC_MALLOC((strlen(token)+1)*sizeof(char));
     strcpy(output[numparts], token);
     numparts++;
 
@@ -116,7 +116,7 @@ char **str_n_tokenize(const char *text, const char *sep, int n) {
     }
 
     char *token;
-    char **output = GC_MALLOC((numbreak+1)*sizeof(char*));
+    char **output = GC_MALLOC(((numbreak+1)+1)*sizeof(char*));
 
     numbreak = 0;
     int breakIndex = 0;
@@ -138,7 +138,7 @@ char **str_n_tokenize(const char *text, const char *sep, int n) {
     for (int i = breakIndex; i < len; i++)
         rest[i-breakIndex] = text[i];
 
-    output[numbreak] = GC_MALLOC(strlen(rest)*sizeof(char));
+    output[numbreak] = GC_MALLOC((strlen(rest)+1)*sizeof(char));
     strcpy(output[numbreak], rest);
 
     return output;

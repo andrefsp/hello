@@ -1,4 +1,5 @@
 // Test includes files
+#define GC_DEBUG
 #include "gc.h"
 #include <stdlib.h>
 
@@ -24,6 +25,8 @@ int main(void) {
     test_request();
 
     test_http_client();
+
+    GC_gcollect();
 
     return 0;
 }

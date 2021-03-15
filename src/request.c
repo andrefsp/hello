@@ -22,13 +22,13 @@ void Request_SetConnectTimeout(Request *r, long timeout) {
 }
 
 void Request_SetBody(Request *r, char *body) {
-    r->Body = GC_MALLOC(strlen(body)*sizeof(char));
+    r->Body = GC_MALLOC((strlen(body)+1)*sizeof(char));
     strcpy(r->Body, body);
 }
 
 void Request_SetHeader(Request *r, char *name, char *val) {
-    char *hname = GC_MALLOC(strlen(name)*sizeof(char));
-    char *hval = GC_MALLOC(strlen(val)*sizeof(char));
+    char *hname = GC_MALLOC((strlen(name)+1)*sizeof(char));
+    char *hval = GC_MALLOC((strlen(val)+1)*sizeof(char));
 
     strcpy(hname, name);
     strcpy(hval, val);
