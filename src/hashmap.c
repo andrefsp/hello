@@ -1,9 +1,10 @@
+#include "gc.h"
+#include <string.h>
+#include <stdio.h>
+
 #ifndef _HELLO_HASHMAP_C
 #define _HELLO_HASHMAP_C
 
-#include "gc.h"
-#include "string.h"
-#include "stdio.h"
 #include "hashmap.h"
 
 
@@ -23,11 +24,12 @@ void Hashmap_Set(Hashmap *map, void *lkey, void *value) {
             return;
         }
     }
-    
+    map->Items = GC_REALLOC(map->Items, (map->Size+1)*sizeof(DataItem*));
+
     DataItem *item = GC_MALLOC(sizeof(DataItem));
-    item->key = lkey; 
+    item->key = lkey;
     item->data = value;
-    
+
     map->Items[map->Size] = item;
     map->Size += 1;
 }
@@ -46,15 +48,15 @@ void Hashmap_Delete(Hashmap *map, void *lkey) {
     for (int i = index; i < map->Size-1; i++) {
         map->Items[i] = map->Items[i+1];
     }
-    
+
     map->Size -= 1;
 }
 
 
-Hashmap *NewHashmap() { 
+Hashmap *NewHashmap() {
     Hashmap *map = GC_MALLOC(sizeof(Hashmap));
     map->Size = 0;
-    map->Items = GC_MALLOC(0);
+    map->Items = GC_MALLOC(sizeof(DataItem*));
 
     map->Set = Hashmap_Set;
     map->Get = Hashmap_Get;

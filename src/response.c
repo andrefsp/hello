@@ -1,7 +1,9 @@
+#include "gc.h"
+
+
 #ifndef _HELLO_RESPONSE_C
 #define _HELLO_RESPONSE_C
 
-#include "gc.h"
 #include "strings.h"
 #include "response.h"
 

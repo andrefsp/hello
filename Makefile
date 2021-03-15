@@ -29,7 +29,7 @@ clean:
 
 # commands: c testing
 compile-test: clean build
-	gcc -Wall -x c -std=gnu18 ${PKG_CONFIG} -ldl ${INCLUDE} -g ${TEST_DIR}/test.c -o ${TEST_TARGET}
+	gcc -Wall -x c -std=gnu18 ${PKG_CONFIG} -ldl -lpthread ${INCLUDE} -g ${TEST_DIR}/test.c -o ${TEST_TARGET}
 
 
 run-test: clean compile-test
@@ -39,7 +39,7 @@ run-test: clean compile-test
 
 # commands: c example
 compile-example: clean
-	gcc -Wall -x c -std=gnu18 ${PKG_CONFIG} -ldl ${INCLUDE} -g ${EXAMPLE_DIR}/main.c -o ${EXAMPLE_TARGET}
+	gcc -Wall -x c -std=gnu18 ${PKG_CONFIG} -ldl -lpthread ${INCLUDE} -g ${EXAMPLE_DIR}/main.c -o ${EXAMPLE_TARGET}
 
 
 run-example: clean compile-example

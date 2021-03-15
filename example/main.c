@@ -1,5 +1,6 @@
 #include "gc.h"
-#include "hello.h"
+
+// TODO(andrefsp): Compile .so and use headers only
 #include "hello.c"
 
 
@@ -14,9 +15,8 @@ Response *get_fn(Handler *h, Request *req) {
 
 
 int main() {
-
     Server *s = NewServer(9300);
-    Handler *hnd = GC_MALLOC(sizeof(Handler));  // TODO:  Should have a constructor!
+    Handler *hnd = NewHandler();
 
     hnd->Get = get_fn; // Assign HTTP method to handler function
     s->AddHandler(s, "/", hnd);

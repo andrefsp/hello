@@ -1,12 +1,12 @@
-#ifndef _HELLO_reqbuffUEST_C
-#define _HELLO_reqbuffUEST_C
-
+#include "gc.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 
-#include "gc.h"
+#ifndef _HELLO_reqbuffUEST_C
+#define _HELLO_reqbuffUEST_C
+
 #include "request.h"
 
 #include "picohttpparser/picohttpparser.h"

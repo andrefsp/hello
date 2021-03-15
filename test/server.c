@@ -30,7 +30,8 @@ void test_server_with_request(void) {
     HttpClient *client = NewHttpClient();
 
     Server *s = NewServer(9300);
-    Handler *hnd = GC_MALLOC(sizeof(Handler));
+
+    Handler *hnd = NewHandler();
     hnd->Get = get_fn;
     assert(((void)"handler added", !s->AddHandler(s, "/", hnd)));
 

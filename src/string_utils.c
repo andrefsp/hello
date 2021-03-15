@@ -1,16 +1,17 @@
+#include "gc.h"
+#include <stdlib.h>
+#include <string.h>
+
 #ifndef _HELLO_STRING_UTILS_C
 #define _HELLO_STRING_UTILS_C
 
-#include <stdlib.h>
-#include <string.h>
-#include "gc.h"
 #include "string_utils.h"
 
 
 char *str_clean(const char *text) {
     const int len = strlen(text);
     char *string = GC_MALLOC(len*sizeof(char));
-    
+
     int si = 0;
     int ti = 0;
     while (ti < len) {
@@ -35,23 +36,20 @@ char *str_strip(const char *text, char ch) {
 
 char *str_rstrip(const char *text, char ch) {
     const int len = strlen(text);
+    char *string = GC_MALLOC(len*sizeof(char));
+    strcpy(string, text);
+
     int x = len-1;
-    while (text[x] == ch) { x--; }
-
-    char *string = GC_MALLOC(x*sizeof(char));
-    for (int i = 0; i <= x; i++) {
-        string[i] = text[i];
-    }
-
+    while (string[x] == ch) { x--; }
     string[x+1] = '\0';
     return string;
 }
 
 
-char *str_lstrip(const char *text, char ch) { 
+char *str_lstrip(const char *text, char ch) {
     int x = 0;
     while (text[x] == ch) { x++; }
-    
+
     const int len = strlen(text);
     const int tlen = (len-x);
     char *string = GC_MALLOC(tlen*sizeof(char));
@@ -67,19 +65,26 @@ char *str_lstrip(const char *text, char ch) {
 char **str_tokenize(const char *text, const char *sep) {
     const int len = strlen(text);
 
-    char string[len];
+    char *string = GC_MALLOC(len*sizeof(char));
     strcpy(string, text);
-   
-    char *token; 
-    char **output = GC_MALLOC(sizeof(char*));
 
-    token = strtok(string, sep);
     int numparts = 0;
+    for (int x = 0; x < len; x++) {
+        if (string[x] == *sep)
+            numparts++;
+    }
+
+    char **output = GC_MALLOC((numparts+1)*sizeof(char*));
+
+    char *token;
+    token = strtok(string, sep);
+
+    numparts = 0;
 
     output[numparts] = GC_MALLOC(strlen(token)*sizeof(char));
     strcpy(output[numparts], token);
     numparts++;
- 
+
     while(token != NULL) {
         token = strtok(NULL, sep);
         if (!token)
@@ -88,13 +93,12 @@ char **str_tokenize(const char *text, const char *sep) {
         strcpy(output[numparts], token);
         numparts++;
     }
-    
     return output;
 }
 
 
 char **str_n_tokenize(const char *text, const char *sep, int n) {
-    if (n < 1) { 
+    if (n < 1) {
         return str_tokenize(text, sep);
     }
 
@@ -103,17 +107,25 @@ char **str_n_tokenize(const char *text, const char *sep, int n) {
     char string[len];
     strcpy(string, text);
 
-    char *token; 
-    char **output = GC_MALLOC(0);
-   
     int numbreak = 0;
+    for (int x = 0; x < len; x++) {
+         if (string[x] == *sep)
+            numbreak++;
+         if (numbreak == n)
+            break;
+    }
+
+    char *token;
+    char **output = GC_MALLOC((numbreak+1)*sizeof(char*));
+
+    numbreak = 0;
     int breakIndex = 0;
 
     token = strtok(string, sep);
     for (int i = 0; i < n; i++) {
         if (!token)
             break;
-                 
+
         breakIndex += (strlen(token)+strlen(sep));
         numbreak++;
         output[i] = GC_MALLOC(strlen(token)*sizeof(char));
@@ -121,14 +133,14 @@ char **str_n_tokenize(const char *text, const char *sep, int n) {
 
         token = strtok(NULL, sep);
     }
- 
+
     char *rest = GC_MALLOC(len*sizeof(char));
     for (int i = breakIndex; i < len; i++)
         rest[i-breakIndex] = text[i];
-    
+
     output[numbreak] = GC_MALLOC(strlen(rest)*sizeof(char));
     strcpy(output[numbreak], rest);
-   
+
     return output;
 }
 

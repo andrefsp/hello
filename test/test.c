@@ -1,4 +1,5 @@
 // Test includes files
+#include "gc.h"
 #include <stdlib.h>
 
 #include "point.c"
@@ -11,6 +12,8 @@
 
 
 int main(void) {
+    GC_INIT();
+
     test_hashmap();
     test_string_utils();
     test_point();

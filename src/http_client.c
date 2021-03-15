@@ -1,4 +1,8 @@
+#include "gc.h"
 #include "http_client.h"
+
+#ifndef _HELLO_HTTP_CLIENT_C
+#define _HELLO_HTTP_CLIENT_C
 
 #include "response.c"
 #include "request.c"
@@ -93,3 +97,4 @@ HttpClient *NewHttpClient() {
     return c;
 }
 
+#endif

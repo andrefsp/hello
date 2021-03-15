@@ -9,5 +9,7 @@ void test_point_dist(void) {
 }
 
 void test_point(void) {
-    test_point_dist();
+    for (int x = 0; x < 10000; x++) {
+        test_point_dist();
+    }
 }

@@ -45,7 +45,9 @@ void test_response_set_headers() {
 
 
 void test_response() {
-    test_response_status_code();
-    test_response_write_body();
-    test_response_set_headers();
+    for (int x = 0; x < 10000; x++) {
+        test_response_status_code();
+        test_response_write_body();
+        test_response_set_headers();
+    }
 }

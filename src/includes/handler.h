@@ -15,4 +15,6 @@ struct Handler {
 };
 
 
+Handler *NewHandler();
+
 #endif

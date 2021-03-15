@@ -1,8 +1,8 @@
+#include "gc.h"
+#include <string.h>
+
 #ifndef _HELLO_BUFFER_UTILS_C
 #define _HELLO_BUFFER_UTILS_C
-
-#include <string.h>
-#include "gc.h"
 
 
 // create a new UV buffer

@@ -41,6 +41,8 @@ Content-Type: application/json\r\n\
 }
 
 void test_request(void) {
-    test_request_properties();
-    test_request_parse();
+    for (int x = 0; x < 10000; x++) {
+        test_request_properties();
+        test_request_parse();
+    }
 }

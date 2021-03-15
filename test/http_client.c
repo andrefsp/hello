@@ -63,7 +63,9 @@ void test_http_client_response_header_handler(void) {
 
 
 void test_http_client() {
-    //test_http_client_new_request();
-    test_http_client_response_header_handler(); 
-    test_http_client_response_status_header_handler();
+    for (int x = 0; x < 10000; x++) {
+        //test_http_client_new_request();
+        test_http_client_response_header_handler(); 
+        test_http_client_response_status_header_handler();
+    }
 }

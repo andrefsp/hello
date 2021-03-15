@@ -1,3 +1,5 @@
+#include "gc.h"
+
 #ifndef _HELLO_C
 #define _HELLO_C
 
@@ -9,5 +11,6 @@
 #include "response.c"
 #include "server.c"
 #include "http_client.c"
+#include "handler.c"
 
 #endif

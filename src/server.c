@@ -1,7 +1,8 @@
+#include "gc.h"
+
 #ifndef _HELLO_SERVER_C
 #define _HELLO_SERVER_C
 
-#include "gc.h"
 #include "uv.h"
 #include "server.h"
 #include "hello.h"
