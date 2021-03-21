@@ -1,4 +1,5 @@
 #include "gc.h"
+#include "hello.h"
 
 #ifndef _HELLO_C
 #define _HELLO_C

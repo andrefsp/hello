@@ -1,8 +1,5 @@
-// TODO(andrefsp): Compile .so and use headers only
-#include "hello.c"
+#include "hello.h"
 
-#define GC_THREADS
-#include "gc.h"
 
 Response *get_fn(Handler *h, Request *req) {
     Response *res = NewResponse();
