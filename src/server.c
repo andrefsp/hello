@@ -1,9 +1,10 @@
-#include "gc.h"
-
 #ifndef _HELLO_SERVER_C
 #define _HELLO_SERVER_C
 
 #include "uv.h"
+#include "gc.h"
+#define GC_THREADS
+
 #include "server.h"
 #include "hello.h"
 
@@ -20,6 +21,7 @@ void Server_Handler(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
         /* if (uv_last_error(loop).code != UV_EOF) { */
         /* } */
         uv_close((uv_handle_t *)stream, NULL);
+        return;
     }
 
     // Create request
@@ -93,11 +95,12 @@ int Server_Start(Server *s, int block) {
         fprintf(stderr, "Error when listening: %s\n", uv_strerror(err));
         return err;
     }
-    
-    uv_thread_t t_id;
-    uv_thread_create(&t_id, s->Listen, s);
-    if (block) {
-        uv_thread_join(&t_id);
+  
+    if (block) { 
+        s->Listen(s);
+    } else {
+        uv_thread_t t_id;
+        uv_thread_create(&t_id, s->Listen, s);
     }
 
     return 0;

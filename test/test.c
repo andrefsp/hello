@@ -1,6 +1,4 @@
 // Test includes files
-#define GC_DEBUG
-#include "gc.h"
 #include <stdlib.h>
 
 #include "point.c"
@@ -13,8 +11,6 @@
 
 
 int main(void) {
-    GC_INIT();
-
     test_hashmap();
     test_string_utils();
     test_point();
@@ -25,8 +21,6 @@ int main(void) {
     test_request();
 
     test_http_client();
-
-    GC_gcollect();
 
     return 0;
 }

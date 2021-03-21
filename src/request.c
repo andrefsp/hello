@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 
-#ifndef _HELLO_reqbuffUEST_C
-#define _HELLO_reqbuffUEST_C
+#ifndef _HELLO_REQUEST_C
+#define _HELLO_REQUEST_C
 
 #include "request.h"
 
@@ -39,11 +39,6 @@ void Request_SetHeader(Request *r, char *name, char *val) {
 char *Request_GetHeader(Request *r, char *name) {
     return r->Headers->Get(r->Headers, name);
 }
-
-int Request_Parse(Request *r, char *buff) {
-    return 0;
-}
-
 
 Request *NewRequest(char *method, char *url) {
     Request *r = GC_MALLOC(sizeof(Request));
