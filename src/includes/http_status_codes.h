@@ -84,4 +84,6 @@ typedef struct HttpStatusCodes {
 HttpStatusCodes codes;
 
 
+HttpStatusCode *NewStatusCode();
+
 #endif

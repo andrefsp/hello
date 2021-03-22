@@ -1,3 +1,6 @@
+#include "gc.h"
+#include <string.h>
+
 #ifndef _HELLO_HTTP_STATUS_CODES_C
 #define _HELLO_HTTP_STATUS_CODES_C
 
@@ -146,5 +149,15 @@ HttpStatusCodes codes = {
     &HttpNotExtended, 
     &HttpNetworkAuthenticationRequired
 };
+
+
+HttpStatusCode *NewStatusCode(char *status, int code) {
+    HttpStatusCode *statusCode = GC_MALLOC(sizeof(HttpStatusCode));
+    statusCode->Status = GC_MALLOC(strlen(status)*sizeof(char));
+    strcpy(statusCode->Status, status);
+    statusCode->Code = code;
+    return statusCode;
+}
+
 
 #endif

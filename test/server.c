@@ -41,7 +41,6 @@ void test_server_with_request(void) {
     
     Response *res = client->Do(client, req);
 
-    printf(">> %d \n", res->HttpStatusCode->Code);
     assert(((void)"status code", res->HttpStatusCode->Code == 200));
     assert(((void)"status code", strcmp(res->Body, "helloworld") == 0));
    

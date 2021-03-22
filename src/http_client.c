@@ -32,9 +32,7 @@ static size_t _responseHeaderHandler(void *contents, size_t size, size_t nmemb, 
         // There should be an error in case an invalid status header is sent
         parts = str_tokenize(header, " ");
         
-        HttpStatusCode statusCode = {parts[2], atoi(parts[1])};
-
-        res->SetStatusCode(res, &statusCode);
+        res->SetStatusCode(res, NewStatusCode(parts[2], atoi(parts[1])));
     } else {
         parts = str_n_tokenize(header, ":", 1);
         char *hname = str_strip(parts[0], ' ');
