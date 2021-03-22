@@ -36,7 +36,7 @@ compile-test: clean
 	$(CC) $(TEST_DIR)/test.c -o $(TEST_TARGET)
 
 
-run-test: clean compile-test
+run-test: compile-test
 	$(TEST_TARGET)
 
 
