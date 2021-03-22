@@ -19,8 +19,7 @@ void test_server_start_listen(void) {
 
 Response *get_fn(Handler *h, Request *req) {
     Response *res = NewResponse();
-    res->SetStatus(res, "OK");
-    res->SetStatusCode(res, 200);
+    res->SetStatusCode(res, codes.HttpOK);
     res->SetHeader(res, "Content-Type", "text/plain");
     res->WriteBody(res, "helloworld");
     return res;
@@ -42,7 +41,8 @@ void test_server_with_request(void) {
     
     Response *res = client->Do(client, req);
 
-    assert(((void)"status code", res->StatusCode == 200));
+    printf(">> %d \n", res->HttpStatusCode->Code);
+    assert(((void)"status code", res->HttpStatusCode->Code == 200));
     assert(((void)"status code", strcmp(res->Body, "helloworld") == 0));
    
     char *ctype = res->GetHeader(res, "Content-Type");

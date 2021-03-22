@@ -7,6 +7,7 @@
 // Include for all header files
 #include "hashmap.h"
 #include "string_utils.h"
+#include "http_status_codes.h"
 
 #include "point.h"
 #include "response.h"

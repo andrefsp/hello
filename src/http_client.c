@@ -27,12 +27,14 @@ static size_t _responseHeaderHandler(void *contents, size_t size, size_t nmemb, 
     }
 
     Response *res = (Response *)userp;
-    if (!res->StatusCode) {
+    if (!res->HttpStatusCode) {
         // TODO(andrefsp): Validate status header.
         // There should be an error in case an invalid status header is sent
         parts = str_tokenize(header, " ");
-        res->SetStatusCode(res, atoi(parts[1]));
-        res->SetStatus(res, parts[2]);
+        
+        HttpStatusCode statusCode = {parts[2], atoi(parts[1])};
+
+        res->SetStatusCode(res, &statusCode);
     } else {
         parts = str_n_tokenize(header, ":", 1);
         char *hname = str_strip(parts[0], ' ');

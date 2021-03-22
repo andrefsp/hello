@@ -2,19 +2,19 @@
 #define _HELLO_RESPONSE_H
 
 #include "hashmap.h"
+#include "http_status_codes.h"
+
 
 typedef struct Response Response;
 
 struct Response {
     Hashmap *Headers;
 
-    int StatusCode;
-    char *Status;
+    HttpStatusCode *HttpStatusCode;
 
     char *Body;
 
-    void (*SetStatus)(Response *r, char *rstatus);
-    void (*SetStatusCode)(Response *r, int statusCode);
+    void (*SetStatusCode)(Response *r, HttpStatusCode *status);
     void (*SetHeader)(Response *r, char *name, char *val);
     char * (*GetHeader)(Response *r, char *name);
     void (*WriteBody)(Response *r, char *contents);
@@ -22,9 +22,8 @@ struct Response {
     char * (*ToString)(Response *r);
 };
 
-void Response_SetStatus(Response *r, char *rstatus);
 
-void Response_SetStatusCode(Response *r, int statusCode);
+void Response_SetStatusCode(Response *r, HttpStatusCode *status);
 
 void Response_WriteBody(Response *r, char *contents);
 

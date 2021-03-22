@@ -6,6 +6,7 @@
 
 #include "hashmap.c"
 #include "string_utils.c"
+#include "http_status_codes.c"
 
 #include "point.c"
 #include "request.c"

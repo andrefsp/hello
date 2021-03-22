@@ -12,13 +12,8 @@
 #include "string_utils.c"
 
 
-void Response_SetStatusCode(Response *r, int statusCode) {
-    r->StatusCode = statusCode; 
-}
-
-void Response_SetStatus(Response *r, char *status) {
-    r->Status = GC_MALLOC(strlen(status)*sizeof(char));
-    strcpy(r->Status, status);
+void Response_SetStatusCode(Response *r, HttpStatusCode *statusCode) {
+    r->HttpStatusCode = statusCode; 
 }
 
 void Response_WriteBody(Response *r, char *contents) {
@@ -45,7 +40,7 @@ char *Response_GetHeader(Response *r, char *name) {
 
 char *Response_ToString(Response *r) {
     char *statusLine = GC_MALLOC(100);
-    sprintf(statusLine, "HTTP/1.1 %d %s\r\n", r->StatusCode, r->Status);
+    sprintf(statusLine, "HTTP/1.1 %d %s\r\n", r->HttpStatusCode->Code, r->HttpStatusCode->Status);
 
     char *respString = str_concat("", statusLine); 
     for (int x = 0; x < r->Headers->Size; x++) {
@@ -66,8 +61,6 @@ Response *NewResponse() {
     
     res->Headers = NewHashmap();
     
-    res->StatusCode = 0;
-    res->SetStatus = Response_SetStatus;
     res->SetStatusCode = Response_SetStatusCode;
 
     res->SetHeader = Response_SetHeader;

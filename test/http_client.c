@@ -32,8 +32,8 @@ void test_http_client_response_status_header_handler(void) {
     _responseHeaderHandler(statusHeader, 1, strlen(statusHeader), res);
     _responseHeaderHandler(lastHeader, 1, strlen(lastHeader), res);
 
-    assert(((void)"status code", res->StatusCode == 200));
-    assert(((void)"status", strcmp(res->Status, "OK") == 0));    
+    assert(((void)"status code", res->HttpStatusCode->Code == 200));
+    assert(((void)"status", strcmp(res->HttpStatusCode->Status, "OK") == 0));    
 }
 
 
@@ -49,9 +49,9 @@ void test_http_client_response_header_handler(void) {
     _responseHeaderHandler(etagHeader, 1, strlen(etagHeader), res);
     _responseHeaderHandler(lastHeader, 1, strlen(lastHeader), res);
 
-    assert(((void)"status code", res->StatusCode == 200));
-    assert(((void)"status", strcmp(res->Status, "OK") == 0));
-    
+    assert(((void)"status code", res->HttpStatusCode->Code == 200));
+    assert(((void)"status", strcmp(res->HttpStatusCode->Status, "OK") == 0));
+   
     char *ctypeh = res->GetHeader(res, "Content-Type");
     assert(((void)"ctype header not nil", ctypeh));
     assert(((void)"ctype header", strcmp(ctypeh, "text/html") == 0));

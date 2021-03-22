@@ -36,8 +36,7 @@ void Server_Handler(uv_stream_t *stream, ssize_t nread, const uv_buf_t *buf) {
     } else {
         // Not found!
         hresp = NewResponse();
-        hresp->SetStatus(hresp, "Not Found");
-        hresp->SetStatusCode(hresp, 404);
+        hresp->SetStatusCode(hresp, codes.HttpNotFound);
     }
     
     uv_buf_t *resp = new_uv_buffer(hresp->ToString(hresp));

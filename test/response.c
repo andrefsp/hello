@@ -4,18 +4,18 @@
 
 void test_response_status_code() {
     Response *res = NewResponse();
-    char *s = "OK";
-    res->SetStatus(res, s);
-    res->SetStatusCode(res, 200);
-    assert(((void)"status code", res->StatusCode == 200));
-    assert(((void)"status", strcmp(res->Status, "OK") == 0));
+    
+    res->SetStatusCode(res, codes.HttpOK);
+    assert(((void)"status code", res->HttpStatusCode->Code == 200));
+    assert(((void)"status", strcmp(res->HttpStatusCode->Status, "OK") == 0));
 }
 
 
 void test_response_write_body() {
     Response *res = NewResponse();
-    res->SetStatusCode(res, 200);
-    assert(((void)"status code", res->StatusCode == 200));
+    res->SetStatusCode(res, codes.HttpOK);
+    assert(((void)"status code", res->HttpStatusCode->Code == 200));
+    assert(((void)"status", strcmp(res->HttpStatusCode->Status, "OK") == 0));
 
     res->WriteBody(res, "this");
     res->WriteBody(res, "_is_\n"); 

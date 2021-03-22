@@ -3,8 +3,7 @@
 
 Response *get_fn(Handler *h, Request *req) {
     Response *res = NewResponse();
-    res->SetStatus(res, "OK");
-    res->SetStatusCode(res, 200);
+    res->SetStatusCode(res, codes.HttpOK);
     res->SetHeader(res, "Content-Type", "text/plain");
     res->WriteBody(res, "helloworld");
     return res;
